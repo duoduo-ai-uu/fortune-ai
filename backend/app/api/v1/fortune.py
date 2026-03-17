@@ -225,3 +225,24 @@ def get_session_messages(
     ).order_by(FortuneMessage.created_at).all()
     
     return messages
+
+
+# ============ 公开接口：历史记录（简化版）============
+
+@router.get("/sessions/public")
+def get_sessions_public(limit: int = 10, db: Session = Depends(get_db)):
+    """获取最近的算命记录（公开，无需认证）"""
+    sessions = db.query(FortuneSession).order_by(
+        FortuneSession.updated_at.desc()
+    ).limit(limit).all()
+    
+    return [
+        {
+            "id": str(s.id),
+            "session_type": s.session_type,
+            "title": s.title,
+            "total_messages": s.total_messages,
+            "updated_at": s.updated_at.isoformat() if s.updated_at else None
+        }
+        for s in sessions
+    ]

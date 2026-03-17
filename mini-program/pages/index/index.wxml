@@ -52,6 +52,7 @@
             <view class="fortune-card-header">
               <text class="fortune-card-icon">{{item.icon}}</text>
               <text class="fortune-card-title">{{item.typeName}}</text>
+              <button class="share-btn" catchtap="onShareAppMessage" data-content="{{item.content}}">📤</button>
             </view>
             <view class="fortune-card-content">{{item.content}}</view>
             <view class="fortune-card-footer">

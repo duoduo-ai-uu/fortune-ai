@@ -1,6 +1,6 @@
 /**
  * Labubu 算命小程序 - 连接真实后端
- * 功能：5种算命类型 + AI对话 + 运势卡片
+ * 功能：5种算命类型 + AI对话 + 运势卡片 + 分享
  */
 
 const FORTUNE_TYPES = [
@@ -207,5 +207,24 @@ Page({
     if (luck >= 80) return typeTips[0]
     if (luck >= 60) return typeTips[1]
     return typeTips[2]
+  },
+
+  // 分享功能
+  onShareAppMessage() {
+    const { fortuneTypes, typeIndex } = this.data
+    const type = fortuneTypes[typeIndex]
+    return {
+      title: `🔮 我的${type.name}运势 - Labubu为你解读`,
+      path: '/pages/index/index'
+    }
+  },
+
+  onShareTimeline() {
+    const { fortuneTypes, typeIndex } = this.data
+    const type = fortuneTypes[typeIndex]
+    return {
+      title: `🔮 我的${type.name}运势 - Labubu为你解读`,
+      query: `type=${type.id}`
+    }
   }
 })
