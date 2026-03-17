@@ -21,7 +21,47 @@ from app.services.llm_service import llm_service
 router = APIRouter(prefix="/fortune", tags=["算命服务"])
 
 
-# ============ 公开接口 ============
+# ============ 公开接口（无需认证）============
+# 用于小程序测试，生产环境建议关闭或添加限流
+
+@router.post("/chat/public")
+def chat_public(
+    request: FortuneRequest,
+    db: Session = Depends(get_db)
+):
+    """公开算命接口（无需认证）"""
+    message = request.message
+    session_type = request.session_type or "general"
+    template = db.query(PromptTemplate).filter(
+        PromptTemplate.fortune_type == session_type,
+        PromptTemplate.is_active == True,
+        PromptTemplate.is_default == True
+    ).first()
+    
+    if not template:
+        template = db.query(PromptTemplate).filter(
+            PromptTemplate.is_default == True,
+            PromptTemplate.is_active == True
+        ).first()
+    
+    system_prompt = template.system_prompt if template else None
+    
+    # 调用 LLM
+    llm_result = llm_service.generate_fortune(
+        user_message=message,
+        session_type=session_type,
+        system_prompt=system_prompt,
+    )
+    
+    return {
+        "message": llm_result["content"],
+        "session_id": None,
+        "tokens_used": llm_result["tokens"],
+        "session_type": session_type
+    }
+
+
+# ============ 需要认证的接口 ============
 
 @router.get("/types", response_model=List[FortuneTypeResponse])
 def get_fortune_types(db: Session = Depends(get_db)):

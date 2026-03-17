@@ -1,6 +1,6 @@
 /**
- * Labubu 算命小程序 - 第二波优化
- * 添加：运势卡片、打字机优化、更多交互
+ * Labubu 算命小程序 - 连接真实后端
+ * 功能：5种算命类型 + AI对话 + 运势卡片
  */
 
 const FORTUNE_TYPES = [
@@ -11,33 +11,13 @@ const FORTUNE_TYPES = [
   { id: 'health', name: '健康平安', icon: '🌿', color: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' }
 ]
 
-// 更丰富的 Mock 回复（带运势卡片格式）
-const MOCK_RESPONSES = {
-  general: [
-    { type: 'text', content: '今天的你就像一颗闪耀的星星✨ 整体运势不错，适合尝试新事物。', luck: 85, tip: '保持乐观，好运自然来' },
-    { type: 'text', content: '宇宙在告诉你：近期有意外惊喜！⭐ 但要耐心等待时机。', luck: 78, tip: '不宜冲动，静观其变' },
-    { type: 'text', content: '今日宜静心养性，适合冥想或阅读📚 内在能量正在积累。', luck: 72, tip: '修身养性，顺势而为' }
-  ],
-  love: [
-    { type: 'text', content: '红鸾星动！单身的你有望在本周遇到正缘💕 把握机会~', luck: 92, tip: '主动出击，不要错过' },
-    { type: 'text', content: '如果已有伴侣，今天适合安排一次浪漫约会🥰 感情升温~', luck: 88, tip: '多陪伴，多沟通' },
-    { type: 'text', content: 'TA的心意正在动摇，主动一点可能会有惊喜哦～', luck: 75, tip: '真诚表达，不要试探' }
-  ],
-  career: [
-    { type: 'text', content: '工作上遇到瓶颈了吗？换个角度思考，灵感就在眼前！💡', luck: 82, tip: '换位思考，突破思维' },
-    { type: 'text', content: '今天的你特别适合谈判或演讲，表现欲旺盛🔥', luck: 90, tip: '抓住机会，展示能力' },
-    { type: 'text', content: '别急，机遇正在路上。保持耐心，好事将近📈', luck: 68, tip: '耐心等待，不要放弃' }
-  ],
-  wealth: [
-    { type: 'text', content: '财富运势今日小吉，但要注意冲动消费哦💰', luck: 78, tip: '理性消费，避免冲动' },
-    { type: 'text', content: '或许可以尝试小额投资，回报可能超出预期✨', luck: 85, tip: '小额尝试，见好就收' },
-    { type: 'text', content: '有意外之财的可能！保持开放心态接收惊喜🧧', luck: 95, tip: '保持开放，好运将至' }
-  ],
-  health: [
-    { type: 'text', content: '身体是革命的本钱，今天适合做一些轻运动🏃', luck: 80, tip: '适度运动，保持健康' },
-    { type: 'text', content: '注意休息，熬夜伤身哦～🌙', luck: 65, tip: '规律作息，早睡早起' },
-    { type: 'text', content: '健康运势平稳，保持规律作息最重要💪', luck: 82, tip: '注意饮食，保持运动' }
-  ]
+// 运势卡片颜色映射
+const CARD_COLORS = {
+  general: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  love: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+  career: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+  wealth: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+  health: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
 }
 
 function generateStars(count) {
@@ -45,7 +25,7 @@ function generateStars(count) {
   for (let i = 0; i < count; i++) {
     stars.push({
       x: Math.random() * 100,
-      y: Math.random() * 60, // 只在上半部分
+      y: Math.random() * 60,
       delay: Math.random() * 3,
       size: 2 + Math.random() * 3
     })
@@ -65,7 +45,8 @@ Page({
     ],
     inputValue: '',
     stars: generateStars(80),
-    isTyping: false
+    isTyping: false,
+    currentSessionId: null
   },
 
   onLoad() {
@@ -74,6 +55,18 @@ Page({
       windowWidth: sysInfo.windowWidth,
       windowHeight: sysInfo.windowHeight
     })
+    // 初始化登录
+    this.initLogin()
+  },
+
+  async initLogin() {
+    const api = require('../utils/api.js').miniApi
+    try {
+      await api.login()
+      console.log('✅ 登录成功')
+    } catch (e) {
+      console.error('登录失败:', e)
+    }
   },
 
   onInput(e) {
@@ -84,7 +77,7 @@ Page({
     this.setData({ typeIndex: e.detail.value })
   },
 
-  // 打字机效果优化版
+  // 打字机效果
   typeWriter(text, callback) {
     this.setData({ isTyping: true })
     let index = 0
@@ -105,13 +98,16 @@ Page({
     type()
   },
 
-  onSend() {
-    const { inputValue, loading, typeIndex, messages, fortuneTypes } = this.data
+  async onSend() {
+    const { inputValue, loading, typeIndex, messages, fortuneTypes, currentSessionId } = this.data
     if (!inputValue.trim() || loading) return
+
+    const api = require('../utils/api.js').miniApi
+    const sessionType = fortuneTypes[typeIndex].id
 
     // 添加用户消息
     const userMessage = { role: 'user', content: inputValue }
-    const aiLoadingMessage = { role: 'assistant', content: '', isFortune: false, isLoading: true }
+    const aiLoadingMessage = { role: 'assistant', content: '🔮 解读中...', isFortune: false, isLoading: true }
     
     this.setData({ 
       messages: [...messages, userMessage, aiLoadingMessage], 
@@ -119,28 +115,97 @@ Page({
       loading: true 
     })
 
-    // 模拟 AI 回复
-    setTimeout(() => {
-      const type = fortuneTypes[typeIndex].id
-      const responses = MOCK_RESPONSES[type]
-      const response = responses[Math.floor(Math.random() * responses.length)]
+    try {
+      // 调用真实后端API
+      const result = await api.chat(inputValue, currentSessionId, sessionType)
       
-      // 更新最后一条消息为运势卡片
+      // 更新会话ID
+      if (result.session_id) {
+        this.setData({ currentSessionId: result.session_id })
+      }
+
+      // 解析AI回复，生成运势卡片
       const fortuneType = fortuneTypes[typeIndex]
+      const luckScore = this.generateLuckScore(result.message)
+      const tip = this.generateTip(sessionType, luckScore)
+      
       const fortuneMessage = {
         role: 'assistant',
-        content: response.content,
+        content: result.message,
         isFortune: true,
-        luck: response.luck,
-        tip: response.tip,
+        luck: luckScore,
+        tip: tip,
         icon: fortuneType.icon,
-        typeName: fortuneType.name
+        typeName: fortuneType.name,
+        cardColor: CARD_COLORS[sessionType]
       }
       
       this.setData({
         messages: [...this.data.messages.slice(0, -1), fortuneMessage],
         loading: false
       })
-    }, 1500)
+      
+    } catch (err) {
+      console.error('API错误:', err)
+      // 回退到本地回复
+      const fallbackMessage = {
+        role: 'assistant',
+        content: '抱歉，神秘力量暂时中断了... 请稍后再试～',
+        isFortune: false
+      }
+      this.setData({
+        messages: [...this.data.messages.slice(0, -1), fallbackMessage],
+        loading: false
+      })
+    }
+  },
+
+  // 生成幸运指数（基于回复内容）
+  generateLuckScore(message) {
+    const positiveWords = ['好', '吉', '运', '福', '喜', '财', '爱', '顺利', '成功', '幸运']
+    const negativeWords = ['注意', '小心', '谨慎', '避免', '难', '阻', '压力', '疲惫']
+    
+    let score = 60 + Math.floor(Math.random() * 20) // 基础60-80
+    
+    positiveWords.forEach(w => { if (message.includes(w)) score += 5 })
+    negativeWords.forEach(w => { if (message.includes(w)) score -= 5 })
+    
+    return Math.min(99, Math.max(30, score))
+  },
+
+  // 生成运势建议
+  generateTip(sessionType, luck) {
+    const tips = {
+      general: [
+        '保持乐观，好运自然来',
+        '今天适合尝试新事物',
+        '静心养性，顺势而为'
+      ],
+      love: [
+        '主动出击，不要错过',
+        '多陪伴，多沟通',
+        '真诚表达，不要试探'
+      ],
+      career: [
+        '抓住机会，展示能力',
+        '换位思考，突破思维',
+        '耐心等待，不要放弃'
+      ],
+      wealth: [
+        '理性消费，避免冲动',
+        '小额尝试，见好就收',
+        '保持开放，好运将至'
+      ],
+      health: [
+        '适度运动，保持健康',
+        '规律作息，早睡早起',
+        '注意饮食，保持运动'
+      ]
+    }
+    
+    const typeTips = tips[sessionType] || tips.general
+    if (luck >= 80) return typeTips[0]
+    if (luck >= 60) return typeTips[1]
+    return typeTips[2]
   }
 })

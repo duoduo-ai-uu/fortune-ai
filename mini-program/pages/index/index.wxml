@@ -48,7 +48,7 @@
         <!-- 运势卡片 -->
         <view class="message assistant" wx:elif="{{item.isFortune}}">
           <view class="message-avatar">🔮</view>
-          <view class="fortune-card">
+          <view class="fortune-card" style="background: {{item.cardColor || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}">
             <view class="fortune-card-header">
               <text class="fortune-card-icon">{{item.icon}}</text>
               <text class="fortune-card-title">{{item.typeName}}</text>
