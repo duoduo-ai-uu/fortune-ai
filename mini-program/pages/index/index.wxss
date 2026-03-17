@@ -1,0 +1,420 @@
+/* 全局 */
+page { 
+  height: 100%; 
+  overflow: hidden;
+  background: #0f0c29;
+}
+
+.page { 
+  height: 100%; 
+  position: relative;
+  background: linear-gradient(180deg, #0f0c29 0%, #1a1635 40%, #24243e 100%);
+  display: flex; 
+  flex-direction: column;
+}
+
+/* ==================== 星空背景 ==================== */
+.stars-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 45%;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  animation: twinkle 3s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 0.8; transform: scale(1); }
+}
+
+/* 流星效果 */
+.shooting-star {
+  position: absolute;
+  width: 100rpx;
+  height: 2rpx;
+  background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+  animation: shoot 3s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes shoot {
+  0% { transform: translateX(0) translateY(0); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateX(300rpx) translateY(150rpx); opacity: 0; }
+}
+
+/* ==================== 顶部 Labubu 区域 ==================== */
+.labubu-header {
+  position: relative;
+  z-index: 1;
+  padding: 40rpx 40rpx 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 30rpx;
+}
+
+.labubu-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 40%, #a18cd1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60rpx;
+  box-shadow: 
+    0 8rpx 30rpx rgba(255, 154, 158, 0.4),
+    0 0 60rpx rgba(161, 140, 209, 0.3);
+  flex-shrink: 0;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8rpx); }
+}
+
+.labubu-info {
+  flex: 1;
+}
+
+.labubu-name {
+  font-size: 34rpx;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+  text-shadow: 0 2rpx 10rpx rgba(0,0,0,0.3);
+}
+
+.labubu-desc {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 2rpx;
+}
+
+/* ==================== 类型选择器 ==================== */
+.type-selector {
+  position: relative;
+  z-index: 1;
+  padding: 0 40rpx 24rpx;
+}
+
+.picker-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  color: #2d3436;
+  padding: 18rpx 36rpx;
+  border-radius: 50rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  box-shadow: 
+    0 6rpx 20rpx rgba(161, 140, 209, 0.5),
+    inset 0 1rpx 0 rgba(255,255,255,0.3);
+  transition: all 0.3s ease;
+}
+
+.picker-btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 2rpx 10rpx rgba(161, 140, 209, 0.3);
+}
+
+/* ==================== 聊天区域 ==================== */
+.chat-box { 
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  background: linear-gradient(180deg, #fafbfc 0%, #f5f6f8 100%);
+  border-radius: 40rpx 40rpx 0 0;
+  display: flex; 
+  flex-direction: column; 
+  overflow: hidden;
+  box-shadow: 0 -10rpx 40rpx rgba(0,0,0,0.15);
+}
+
+.messages { 
+  flex: 1; 
+  padding: 24rpx 30rpx; 
+  overflow-y: auto;
+}
+
+/* ==================== 消息气泡 - 微信风格 ==================== */
+.message { 
+  margin-bottom: 20rpx; 
+  display: flex;
+  align-items: flex-start;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message.user { 
+  justify-content: flex-end; 
+}
+
+.message.assistant { 
+  justify-content: flex-start; 
+}
+
+.message-avatar {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.message.user .message-avatar {
+  order: 1;
+  margin-left: 16rpx;
+}
+
+.message.assistant .message-avatar {
+  margin-right: 16rpx;
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+.message-content {
+  max-width: 72%;
+  padding: 20rpx 26rpx;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+  position: relative;
+  word-wrap: break-word;
+}
+
+/* 用户消息 - 渐变蓝紫 */
+.message.user .message-content {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-top-right-radius: 8rpx;
+  box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.4);
+}
+
+/* AI消息 - 白色带阴影 */
+.message.assistant .message-content {
+  background: #fff;
+  color: #333;
+  border-top-left-radius: 8rpx;
+  border-bottom-left-radius: 16rpx;
+  border-bottom-right-radius: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.08);
+}
+
+/* 消息尖角 */
+.message.user .message-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -12rpx;
+  width: 0;
+  height: 0;
+  border: 12rpx solid transparent;
+  border-top-color: #764ba2;
+  border-right: none;
+}
+
+.message.assistant .message-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -12rpx;
+  width: 0;
+  height: 0;
+  border: 12rpx solid transparent;
+  border-top-color: #fff;
+  border-left: none;
+}
+
+/* ==================== 运势卡片 - 精致版 ==================== */
+.fortune-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #a18cd1 100%);
+  border-radius: 24rpx;
+  padding: 28rpx;
+  max-width: 72%;
+  box-shadow: 
+    0 8rpx 32rpx rgba(102, 126, 234, 0.4),
+    0 0 60rpx rgba(161, 140, 209, 0.2);
+  position: relative;
+  overflow: hidden;
+  animation: cardPop 0.4s ease;
+}
+
+@keyframes cardPop {
+  0% { opacity: 0; transform: scale(0.9); }
+  70% { transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* 卡片光效 */
+.fortune-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30%, 30%); }
+}
+
+.fortune-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.fortune-card-icon {
+  font-size: 44rpx;
+  filter: drop-shadow(0 2rpx 4rpx rgba(0,0,0,0.2));
+}
+
+.fortune-card-title {
+  font-size: 32rpx;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+
+.fortune-card-content {
+  font-size: 27rpx;
+  color: rgba(255,255,255,0.95);
+  line-height: 1.7;
+  margin-bottom: 24rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.fortune-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20rpx;
+  border-top: 1rpx solid rgba(255,255,255,0.15);
+  position: relative;
+  z-index: 1;
+}
+
+.fortune-card-tag {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.2);
+  padding: 10rpx 20rpx;
+  border-radius: 24rpx;
+  font-weight: 500;
+}
+
+/* 幸运指数特殊样式 */
+.fortune-card-tag.luck-tag {
+  background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+  color: #5a4000;
+  font-weight: 600;
+}
+
+/* ==================== 输入区域 ==================== */
+.input-row { 
+  display: flex; 
+  align-items: center; 
+  padding: 20rpx 30rpx 30rpx;
+  background: #fff; 
+  border-top: 1rpx solid #f0f0f0; 
+}
+
+.input { 
+  flex: 1; 
+  height: 76rpx;
+  background: #f5f6f8;
+  border-radius: 38rpx; 
+  padding: 0 32rpx; 
+  font-size: 28rpx; 
+  margin-right: 20rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  background: #fff;
+  border-color: #a18cd1;
+  box-shadow: 0 4rpx 16rpx rgba(161, 140, 209, 0.2);
+}
+
+.send-btn { 
+  width: 130rpx; 
+  height: 76rpx; 
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  color: #2d3436; 
+  border-radius: 38rpx; 
+  font-size: 26rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 16rpx rgba(161, 140, 209, 0.4);
+  transition: all 0.2s ease;
+}
+
+.send-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 8rpx rgba(161, 140, 209, 0.3);
+}
+
+.send-btn[disabled] { 
+  background: #ccc; 
+  box-shadow: none;
+}
+
+/* ==================== Loading 动画 ==================== */
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  color: #999;
+  font-size: 24rpx;
+}
+
+.loading-dots::after {
+  content: '...';
+  animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+  0% { content: '.'; }
+  33% { content: '..'; }
+  66% { content: '...'; }
+}
+
+/* 输入框占位符 */
+.input-placeholder {
+  color: #999;
+}
+
+/* ==================== 适配安全区域 ==================== */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
