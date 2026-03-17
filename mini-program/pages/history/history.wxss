@@ -1,0 +1,187 @@
+/* 历史记录页面样式 */
+page {
+  height: 100%;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.page {
+  min-height: 100%;
+  padding: 20rpx;
+  padding-bottom: 180rpx;
+  box-sizing: border-box;
+}
+
+/* 星空 */
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* 标题 */
+.header {
+  text-align: center;
+  padding: 40rpx 0;
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+  text-shadow: 0 0 20rpx rgba(138, 43, 226, 0.8);
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.7);
+  display: block;
+  margin-top: 16rpx;
+}
+
+/* 记录列表 */
+.records-list {
+  position: relative;
+  z-index: 1;
+  height: calc(100vh - 300rpx);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: rgba(255,255,255,0.8);
+  margin-top: 30rpx;
+}
+
+.empty-hint {
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.5);
+  margin-top: 16rpx;
+}
+
+/* 记录卡片 */
+.record-card {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.08);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  border: 1rpx solid rgba(255,255,255,0.1);
+  transition: all 0.3s;
+}
+
+.record-card:active {
+  background: rgba(255,255,255,0.12);
+  transform: scale(0.98);
+}
+
+.record-icon {
+  font-size: 48rpx;
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(102, 126, 234, 0.2);
+  border-radius: 16rpx;
+}
+
+.record-info {
+  flex: 1;
+  margin-left: 24rpx;
+}
+
+.record-title {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: 600;
+  display: block;
+}
+
+.record-type {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.6);
+  display: block;
+  margin-top: 8rpx;
+}
+
+.record-time {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.4);
+  display: block;
+  margin-top: 8rpx;
+}
+
+.record-arrow {
+  font-size: 40rpx;
+  color: rgba(255,255,255,0.3);
+}
+
+/* 底部导航 */
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  background: rgba(26, 26, 46, 0.95);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1rpx solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10rpx);
+  z-index: 100;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10rpx 30rpx;
+}
+
+.tab-item.active .tab-text {
+  color: #a78bfa;
+}
+
+.tab-icon {
+  font-size: 40rpx;
+}
+
+.tab-text {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.5);
+  margin-top: 4rpx;
+}

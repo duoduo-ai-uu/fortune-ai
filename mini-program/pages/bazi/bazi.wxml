@@ -1,0 +1,124 @@
+<!-- 八字排盘页面 -->
+<view class="page">
+  <!-- 星空背景 -->
+  <view class="stars-container">
+    <view class="star" wx:for="{{stars}}" wx:key="index" 
+          style="left: {{item.x}}%; top: {{item.y}}%; animation-delay: {{item.delay}}s; width: {{item.size}}rpx; height: {{item.size}}rpx;"></view>
+  </view>
+
+  <!-- 标题 -->
+  <view class="header">
+    <text class="title">🔮 八字排盘</text>
+    <text class="subtitle">输入出生信息，解读命运密码</text>
+  </view>
+
+  <!-- 输入表单 -->
+  <view class="form" wx:if="{{!showResult}}">
+    <view class="form-item">
+      <text class="form-label">出生日期</text>
+      <picker mode="date" value="{{birthDate}}" start="1900-01-01" end="2025-12-31" bindchange="onDateChange">
+        <view class="picker">
+          {{birthDate || '请选择日期'}}
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">出生时间</text>
+      <picker mode="time" value="{{birthTime}}" start="00:00" end="23:59" bindchange="onTimeChange">
+        <view class="picker">
+          {{birthTime || '请选择时间'}}
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">性别</text>
+      <view class="gender-select">
+        <view class="gender-btn {{gender === 'male' ? 'active' : ''}}" bindtap="selectGender" data-gender="male">男</view>
+        <view class="gender-btn {{gender === 'female' ? 'active' : ''}}" bindtap="selectGender" data-gender="female">女</view>
+      </view>
+    </view>
+
+    <button class="calc-btn" bindtap="calculateBazi" disabled="{{!birthDate || !birthTime}}">
+      开始排盘
+    </button>
+  </view>
+
+  <!-- 计算中 -->
+  <view class="calculating" wx:if="{{isCalculating}}">
+    <view class="calc-icon">🔮</view>
+    <text class="calc-text">排盘中...</text>
+  </view>
+
+  <!-- 八字结果 -->
+  <view class="result" wx:if="{{showResult}}">
+    <!-- 基础信息 -->
+    <view class="result-header">
+      <text class="result-title">{{result.name}}</text>
+      <text class="result-info">{{result.gender}} · {{result.date}}</text>
+    </view>
+
+    <!-- 八字盘 -->
+    <view class="bazi-plate">
+      <view class="bazi-row header-row">
+        <view class="bazi-col"></view>
+        <view class="bazi-col">年柱</view>
+        <view class="bazi-col">月柱</view>
+        <view class="bazi-col">日柱</view>
+        <view class="bazi-col">时柱</view>
+      </view>
+      <view class="bazi-row">
+        <view class="bazi-col label">天干</view>
+        <view class="bazi-col stem">{{result.tiangan[0]}}</view>
+        <view class="bazi-col stem">{{result.tiangan[1]}}</view>
+        <view class="bazi-col stem">{{result.tiangan[2]}}</view>
+        <view class="bazi-col stem">{{result.tiangan[3]}}</view>
+      </view>
+      <view class="bazi-row">
+        <view class="bazi-col label">地支</view>
+        <view class="bazi-col branch">{{result.dizhi[0]}}</view>
+        <view class="bazi-col branch">{{result.dizhi[1]}}</view>
+        <view class="bazi-col branch">{{result.dizhi[2]}}</view>
+        <view class="bazi-col branch">{{result.dizhi[3]}}</view>
+      </view>
+    </view>
+
+    <!-- 五行分析 -->
+    <view class="wuxing">
+      <view class="wuxing-title">📊 五行分布</view>
+      <view class="wuxing-bars">
+        <view class="wuxing-item" wx:for="{{result.wuxing}}" wx:key="element">
+          <view class="wuxing-bar" style="height: {{item.count * 20}}rpx; background: {{item.color}};"></view>
+          <text class="wuxing-name">{{item.element}}</text>
+          <text class="wuxing-count">{{item.count}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 解读 -->
+    <view class="interpretation">
+      <view class="interpretation-title">📖 命理解读</view>
+      <text class="interpretation-text">{{result.interpretation}}</text>
+    </view>
+
+    <!-- 重新排盘 -->
+    <button class="recalc-btn" bindtap="recalculate">重新排盘</button>
+  </view>
+
+  <!-- 底部导航 -->
+  <view class="tab-bar safe-area-bottom">
+    <view class="tab-item" bindtap="goHome">
+      <text class="tab-icon">🏠</text>
+      <text class="tab-text">首页</text>
+    </view>
+    <view class="tab-item" bindtap="goTarot">
+      <text class="tab-icon">🃏</text>
+      <text class="tab-text">塔罗</text>
+    </view>
+    <view class="tab-item" bindtap="goHistory">
+      <text class="tab-icon">📜</text>
+      <text class="tab-text">记录</text>
+    </view>
+  </view>
+</view>

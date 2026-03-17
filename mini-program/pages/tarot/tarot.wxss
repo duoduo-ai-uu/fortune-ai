@@ -1,0 +1,310 @@
+/* 塔罗牌页面样式 */
+page {
+  height: 100%;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.page {
+  min-height: 100%;
+  padding: 20rpx;
+  padding-bottom: 180rpx;
+  box-sizing: border-box;
+}
+
+/* 星空 */
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* 标题 */
+.header {
+  text-align: center;
+  padding: 40rpx 0;
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+  text-shadow: 0 0 20rpx rgba(138, 43, 226, 0.8);
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.7);
+  display: block;
+  margin-top: 16rpx;
+}
+
+/* 牌阵选择 */
+.spread-selector {
+  display: flex;
+  justify-content: center;
+  gap: 20rpx;
+  margin: 30rpx 0;
+  position: relative;
+  z-index: 1;
+}
+
+.spread-btn {
+  padding: 16rpx 40rpx;
+  border-radius: 40rpx;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.7);
+  font-size: 28rpx;
+  border: 2rpx solid rgba(255,255,255,0.2);
+  transition: all 0.3s;
+}
+
+.spread-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 8rpx 20rpx rgba(102, 126, 234, 0.4);
+}
+
+/* 抽牌区域 */
+.draw-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60rpx 0;
+  position: relative;
+  z-index: 1;
+}
+
+.deck {
+  width: 240rpx;
+  height: 340rpx;
+  background: linear-gradient(135deg, #2d1f4e 0%, #1a1a2e 100%);
+  border-radius: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 4rpx solid rgba(138, 43, 226, 0.6);
+  box-shadow: 0 10rpx 40rpx rgba(0,0,0,0.5), inset 0 0 30rpx rgba(138, 43, 226, 0.2);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.deck-text {
+  font-size: 80rpx;
+}
+
+.deck-hint {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.6);
+  margin-top: 16rpx;
+}
+
+/* 抽牌动画 */
+.drawing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 0;
+  position: relative;
+  z-index: 1;
+}
+
+.spinning-card {
+  width: 160rpx;
+  height: 240rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16rpx;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+.drawing-text {
+  color: rgba(255,255,255,0.8);
+  font-size: 28rpx;
+  margin-top: 30rpx;
+}
+
+/* 结果区域 */
+.result {
+  position: relative;
+  z-index: 1;
+}
+
+.cards-row {
+  display: flex;
+  justify-content: center;
+  gap: 20rpx;
+  flex-wrap: wrap;
+  margin: 30rpx 0;
+}
+
+.card {
+  width: 200rpx;
+  height: 280rpx;
+  perspective: 1000rpx;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #2d1f4e 0%, #1a1a2e 100%);
+  border-radius: 16rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 3rpx solid rgba(138, 43, 226, 0.5);
+  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.4);
+  transition: transform 0.3s;
+}
+
+.card-inner.reversed {
+  transform: rotate(180deg);
+}
+
+.card-inner:active {
+  transform: scale(0.95);
+}
+
+.card-name {
+  font-size: 28rpx;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+}
+
+.card-position {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.6);
+  margin-top: 8rpx;
+}
+
+.card-symbol {
+  font-size: 48rpx;
+  margin-top: 16rpx;
+  opacity: 0.5;
+}
+
+/* 解读 */
+.interpretation {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-top: 30rpx;
+}
+
+.interpretation-title {
+  font-size: 32rpx;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+
+.card-mean {
+  margin-bottom: 24rpx;
+  padding-bottom: 24rpx;
+  border-bottom: 1rpx solid rgba(255,255,255,0.1);
+}
+
+.card-mean:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.mean-position {
+  font-size: 26rpx;
+  color: #a78bfa;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.mean-text {
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.6;
+}
+
+/* 重新抽牌按钮 */
+.redraw-btn {
+  width: 60%;
+  height: 88rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  margin: 40rpx auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+/* 底部导航 */
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  background: rgba(26, 26, 46, 0.95);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1rpx solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10rpx);
+  z-index: 100;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10rpx 30rpx;
+}
+
+.tab-item.active .tab-text {
+  color: #a78bfa;
+}
+
+.tab-icon {
+  font-size: 40rpx;
+}
+
+.tab-text {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.5);
+  margin-top: 4rpx;
+}

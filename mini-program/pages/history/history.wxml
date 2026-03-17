@@ -1,0 +1,51 @@
+<!-- 历史记录页面 -->
+<view class="page">
+  <!-- 星空背景 -->
+  <view class="stars-container">
+    <view class="star" wx:for="{{stars}}" wx:key="index" 
+          style="left: {{item.x}}%; top: {{item.y}}%; animation-delay: {{item.delay}}s; width: {{item.size}}rpx; height: {{item.size}}rpx;"></view>
+  </view>
+
+  <!-- 标题 -->
+  <view class="header">
+    <text class="title">📜 历史记录</text>
+    <text class="subtitle">回顾你的算命足迹</text>
+  </view>
+
+  <!-- 记录列表 -->
+  <scroll-view class="records-list" scroll-y="true">
+    <view wx:if="{{records.length === 0}}" class="empty">
+      <text class="empty-icon">🔮</text>
+      <text class="empty-text">还没有算命记录</text>
+      <text class="empty-hint">去首页开始你的第一次占卜吧</text>
+    </view>
+
+    <block wx:for="{{records}}" wx:key="id">
+      <view class="record-card" bindtap="viewDetail" data-id="{{item.id}}">
+        <view class="record-icon">{{item.icon}}</view>
+        <view class="record-info">
+          <text class="record-title">{{item.title || '算命记录'}}</text>
+          <text class="record-type">{{item.typeName}}</text>
+          <text class="record-time">{{item.time}}</text>
+        </view>
+        <view class="record-arrow">›</view>
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 底部导航 -->
+  <view class="tab-bar safe-area-bottom">
+    <view class="tab-item" bindtap="goHome">
+      <text class="tab-icon">🏠</text>
+      <text class="tab-text">首页</text>
+    </view>
+    <view class="tab-item" bindtap="goTarot">
+      <text class="tab-icon">🃏</text>
+      <text class="tab-text">塔罗</text>
+    </view>
+    <view class="tab-item active">
+      <text class="tab-icon">📜</text>
+      <text class="tab-text">记录</text>
+    </view>
+  </view>
+</view>

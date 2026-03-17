@@ -60,7 +60,7 @@ Page({
   },
 
   async initLogin() {
-    const api = require('../utils/api.js').miniApi
+    const api = require('./api.js').miniApi
     try {
       await api.login()
       console.log('✅ 登录成功')
@@ -102,7 +102,7 @@ Page({
     const { inputValue, loading, typeIndex, messages, fortuneTypes, currentSessionId } = this.data
     if (!inputValue.trim() || loading) return
 
-    const api = require('../utils/api.js').miniApi
+    const api = require('./api.js').miniApi
     const sessionType = fortuneTypes[typeIndex].id
 
     // 添加用户消息

@@ -1,0 +1,342 @@
+/* 八字排盘页面样式 */
+page {
+  height: 100%;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.page {
+  min-height: 100%;
+  padding: 20rpx;
+  padding-bottom: 180rpx;
+  box-sizing: border-box;
+}
+
+/* 星空 */
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* 标题 */
+.header {
+  text-align: center;
+  padding: 40rpx 0;
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+  text-shadow: 0 0 20rpx rgba(138, 43, 226, 0.8);
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.7);
+  display: block;
+  margin-top: 16rpx;
+}
+
+/* 表单 */
+.form {
+  position: relative;
+  z-index: 1;
+  background: rgba(255,255,255,0.08);
+  border-radius: 24rpx;
+  padding: 40rpx;
+  margin-top: 30rpx;
+}
+
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: rgba(255,255,255,0.8);
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.picker {
+  background: rgba(255,255,255,0.1);
+  border-radius: 16rpx;
+  padding: 24rpx 30rpx;
+  color: #fff;
+  font-size: 30rpx;
+  border: 1rpx solid rgba(255,255,255,0.2);
+}
+
+.gender-select {
+  display: flex;
+  gap: 20rpx;
+}
+
+.gender-btn {
+  flex: 1;
+  padding: 24rpx;
+  text-align: center;
+  background: rgba(255,255,255,0.1);
+  border-radius: 16rpx;
+  color: rgba(255,255,255,0.7);
+  font-size: 30rpx;
+  border: 1rpx solid rgba(255,255,255,0.2);
+  transition: all 0.3s;
+}
+
+.gender-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-color: transparent;
+}
+
+.calc-btn {
+  width: 100%;
+  height: 96rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-top: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.calc-btn[disabled] {
+  background: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.5);
+}
+
+/* 计算中 */
+.calculating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 0;
+  position: relative;
+  z-index: 1;
+}
+
+.calc-icon {
+  font-size: 100rpx;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.calc-text {
+  font-size: 32rpx;
+  color: rgba(255,255,255,0.8);
+  margin-top: 30rpx;
+}
+
+/* 结果 */
+.result {
+  position: relative;
+  z-index: 1;
+}
+
+.result-header {
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.result-title {
+  font-size: 40rpx;
+  color: #fff;
+  font-weight: 700;
+  display: block;
+}
+
+.result-info {
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.6);
+  display: block;
+  margin-top: 10rpx;
+}
+
+/* 八字盘 */
+.bazi-plate {
+  background: rgba(255,255,255,0.08);
+  border-radius: 20rpx;
+  padding: 20rpx;
+  overflow-x: auto;
+}
+
+.bazi-row {
+  display: flex;
+  min-width: 600rpx;
+}
+
+.bazi-row.header-row {
+  margin-bottom: 10rpx;
+}
+
+.bazi-col {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  font-size: 28rpx;
+  color: rgba(255,255,255,0.8);
+}
+
+.bazi-col.label {
+  color: rgba(255,255,255,0.5);
+  font-size: 24rpx;
+}
+
+.bazi-col.stem {
+  color: #a78bfa;
+  font-weight: 600;
+  font-size: 32rpx;
+}
+
+.bazi-col.branch {
+  color: #34d399;
+  font-weight: 600;
+  font-size: 32rpx;
+}
+
+/* 五行 */
+.wuxing {
+  background: rgba(255,255,255,0.08);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-top: 30rpx;
+}
+
+.wuxing-title {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 20rpx;
+}
+
+.wuxing-bars {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 200rpx;
+}
+
+.wuxing-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wuxing-bar {
+  width: 40rpx;
+  border-radius: 8rpx 8rpx 0 0;
+}
+
+.wuxing-name {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.7);
+  margin-top: 10rpx;
+}
+
+.wuxing-count {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.5);
+}
+
+/* 解读 */
+.interpretation {
+  background: rgba(255,255,255,0.08);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-top: 30rpx;
+}
+
+.interpretation-title {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 20rpx;
+}
+
+.interpretation-text {
+  font-size: 28rpx;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.8;
+}
+
+.recalc-btn {
+  width: 60%;
+  height: 88rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  margin: 40rpx auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+/* 底部导航 */
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  background: rgba(26, 26, 46, 0.95);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1rpx solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10rpx);
+  z-index: 100;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10rpx 30rpx;
+}
+
+.tab-item.active .tab-text {
+  color: #a78bfa;
+}
+
+.tab-icon {
+  font-size: 40rpx;
+}
+
+.tab-text {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.5);
+  margin-top: 4rpx;
+}

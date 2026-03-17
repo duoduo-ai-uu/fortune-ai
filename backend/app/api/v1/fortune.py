@@ -246,3 +246,28 @@ def get_sessions_public(limit: int = 10, db: Session = Depends(get_db)):
         }
         for s in sessions
     ]
+
+
+# ============ 塔罗牌接口（无需认证）============
+
+@router.post("/tarot/draw")
+def draw_tarot(
+    count: int = 3,
+    spread: str = "past-present-future",
+    db: Session = Depends(get_db)
+):
+    """塔罗牌抽牌"""
+    from app.services.tarot_service import tarot_service
+    
+    if count < 1 or count > 5:
+        count = 3
+    
+    result = tarot_service.draw_cards(count, spread)
+    return result
+
+
+@router.get("/tarot/daily")
+def daily_tarot(db: Session = Depends(get_db)):
+    """每日塔罗牌"""
+    from app.services.tarot_service import tarot_service
+    return tarot_service.get_daily_tarot()

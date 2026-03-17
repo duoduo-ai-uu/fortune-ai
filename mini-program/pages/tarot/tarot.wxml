@@ -1,0 +1,85 @@
+<!-- 塔罗牌页面 -->
+<view class="page">
+  <!-- 星空背景 -->
+  <view class="stars-container">
+    <view class="star" wx:for="{{stars}}" wx:key="index" 
+          style="left: {{item.x}}%; top: {{item.y}}%; animation-delay: {{item.delay}}s; width: {{item.size}}rpx; height: {{item.size}}rpx;"></view>
+  </view>
+
+  <!-- 标题 -->
+  <view class="header">
+    <text class="title">🃏 塔罗占卜</text>
+    <text class="subtitle">静心冥想，抽取你的命运之牌</text>
+  </view>
+
+  <!-- 牌阵选择 -->
+  <view class="spread-selector">
+    <view class="spread-btn {{currentSpread === 'past-present-future' ? 'active' : ''}}" 
+          bindtap="selectSpread" data-spread="past-present-future">
+      三张牌
+    </view>
+    <view class="spread-btn {{currentSpread === 'situation-advice-outcome' ? 'active' : ''}}" 
+          bindtap="selectSpread" data-spread="situation-advice-outcome">
+      建议牌阵
+    </view>
+  </view>
+
+  <!-- 抽牌按钮 -->
+  <view class="draw-area" wx:if="{{!showResult}}">
+    <view class="deck" bindtap="drawCards">
+      <text class="deck-text">🔮</text>
+      <text class="deck-hint">点击抽牌</text>
+    </view>
+  </view>
+
+  <!-- 抽牌动画 -->
+  <view class="drawing" wx:if="{{isDrawing}}">
+    <view class="spinning-card"></view>
+    <text class="drawing-text">洗牌中...</text>
+  </view>
+
+  <!-- 抽牌结果 -->
+  <view class="result" wx:if="{{showResult}}">
+    <view class="cards-row">
+      <block wx:for="{{cards}}" wx:key="index">
+        <view class="card" bindtap="showCardDetail" data-index="{{index}}">
+          <view class="card-inner {{item.is_reversed ? 'reversed' : ''}}">
+            <text class="card-name">{{item.name}}</text>
+            <text class="card-position">{{item.position}}</text>
+            <text class="card-symbol">🃏</text>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 解读 -->
+    <view class="interpretation">
+      <view class="interpretation-title">📖 牌意解读</view>
+      <block wx:for="{{cards}}" wx:key="index">
+        <view class="card-mean">
+          <text class="mean-position">{{item.position}} - {{item.name}}</text>
+          <text class="mean-text">{{item.meaning}}</text>
+        </view>
+      </block>
+    </view>
+
+    <!-- 重新抽牌 -->
+    <button class="redraw-btn" bindtap="redraw">重新抽牌</button>
+  </view>
+
+  <!-- 底部导航 -->
+  <view class="tab-bar safe-area-bottom">
+    <view class="tab-item" bindtap="goHome">
+      <text class="tab-icon">🏠</text>
+      <text class="tab-text">首页</text>
+    </view>
+    <view class="tab-item active">
+      <text class="tab-icon">🃏</text>
+      <text class="tab-text">塔罗</text>
+    </view>
+    <view class="tab-item" bindtap="goHistory">
+      <text class="tab-icon">📜</text>
+      <text class="tab-text">记录</text>
+    </view>
+  </view>
+</view>
